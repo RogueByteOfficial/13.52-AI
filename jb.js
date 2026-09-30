@@ -2888,6 +2888,15 @@ let allDone = false,
                   jbDone,
                   "getuid=" + uidNow2 + " cr_uid=" + rbUid,
                 );
+                if (jbDone) {
+                  const notifOk = sendNotification(
+                    "RogueByte v1.0 - Jailbreak Successful!",
+                  );
+                  mark(
+                    "NOTIF-SENT",
+                    notifOk ? "RogueByte v1.0 toast sent" : "sendNotification failed",
+                  );
+                }
               }
             }
 
@@ -3207,10 +3216,6 @@ let allDone = false,
                 "  (.data/.text/caps need a reboot; the refcounted handles do not)",
             );
 
-            if (jbDone) {
-              const notifOk = sendNotification("RogueByte v1.0 - Jailbreak Successful!");
-              mark("NOTIF-SENT", notifOk ? "RogueByte v1.0 toast sent" : "sendNotification failed");
-            }
             allDone = true;
           }
         }
@@ -3403,7 +3408,8 @@ let allDone = false,
         (allDone ? "" : "  INCOMPLETE"),
     );
     try {
-      finishUI(payloadRunning);
+      const finalOk = !!(jailbroken || payloadRunning);
+      finishUI(finalOk);
     } catch (eUI) {}
   }
 })();
